@@ -76,7 +76,7 @@ body {
     font-size: 55px;
     padding: 30px 10px 4px 10px;
     background-color: #dbeb89;
-    overflow: auto;
+    overflow-x: auto;
     &::-webkit-scrollbar-thumb:hover {
         background: #9bacff !important;
       }

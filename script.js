@@ -9,13 +9,16 @@ function inputHandler(label){
         switch(label) {
             case 'C': 
                 stringDisplay = '';
+                cursorCounter = 0;
                 break;
             case 'DEL':
-                stringDisplay = stringDisplay.slice(0,sliceIndex);
+                if (!(cursorCounter === stringDisplay.length * -1)){
+                    stringDisplay = stringDisplay.slice(0, sliceIndex-1) + stringDisplay.slice(sliceIndex);
+                }
                 break;
             case '<=':
                 if (cursorCounter === stringDisplay.length * -1){
-                    console.log('WRAP PENDING');
+                    cursorCounter = 0;
                 }
                 else {
                     cursorCounter--;
@@ -23,10 +26,34 @@ function inputHandler(label){
                 break;
             case '=>':
                 if (cursorCounter === 0){
-                    console.log('WRAP PENDING');
+                    cursorCounter = stringDisplay.length * -1;
                 }
                 else {
                     cursorCounter++;
+                }
+                break;
+            case ('/%'):
+                if (!(cursorCounter === stringDisplay.length * -1)){
+                    if (stringDisplay[sliceIndex-1] === '/'){
+                        stringDisplay = stringDisplay.slice(0, sliceIndex-1) + stringDisplay.slice(sliceIndex);
+                        let stringArray = stringDisplay.split('');
+                        stringArray.splice(sliceIndex-1, 0, '%');
+                        stringDisplay = stringArray.join(''); 
+                    }
+                    else if (stringDisplay[sliceIndex-1] === '%'){
+                        stringDisplay = stringDisplay.slice(0, sliceIndex-1) + stringDisplay.slice(sliceIndex);
+                    }
+                    else {
+                        stringDisplay = stringDisplay.slice(0, sliceIndex) + stringDisplay.slice(sliceIndex);
+                        let stringArray = stringDisplay.split('');
+                        stringArray.splice(sliceIndex, 0, '/');
+                        stringDisplay = stringArray.join(''); 
+                    }
+                }
+                else {
+                    let stringArray = stringDisplay.split('');
+                    stringArray.splice(sliceIndex, 0, '/');
+                    stringDisplay = stringArray.join(''); 
                 }
                 break;
         }
@@ -36,7 +63,18 @@ function inputHandler(label){
         stringArray.splice(sliceIndex, 0, label);
         stringDisplay = stringArray.join(''); 
     }
-    displayOnPage.textContent = stringDisplay;
+    updateDisplayWithCursor();
+}
+
+// Cursor handler
+
+function updateDisplayWithCursor() {
+    let cursorIndex = stringDisplay.length + cursorCounter;
+    let displayWithCursor = 
+        stringDisplay.slice(0, cursorIndex) + 
+        "_" + 
+        stringDisplay.slice(cursorIndex);
+    displayOnPage.textContent = displayWithCursor;
 }
 
 
