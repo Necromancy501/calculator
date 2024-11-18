@@ -68,6 +68,8 @@ body {
 }
 
 .display-top {
+    box-sizing: border-box;
+    height: 97px;
     min-width: 500px;
     max-width: 500px;
     font-family: 'Courier New';
@@ -93,6 +95,8 @@ body {
 }
 
 .display-bottom {
+    box-sizing: border-box;
+    height: 44px;
     font-family: 'Courier New';
     font-size: 30px;
     padding: 10px 10px 0px 10px;
