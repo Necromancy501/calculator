@@ -21,7 +21,7 @@ body {
 .body-calc {
     background-color: #2b4d4b88;
     margin: 30px;
-    padding: 10px 20px 20px 20px;
+    padding: 10px 10px 0px 10px;
     display: flex;
     flex-flow: column nowrap;
     align-self: center;
@@ -69,26 +69,25 @@ body {
 
 .display-top {
     box-sizing: border-box;
-    height: 97px;
-    min-width: 500px;
-    max-width: 500px;
+    height: 90px;
+    width: 360px;
     font-family: 'Courier New';
-    font-size: 55px;
-    padding: 30px 10px 4px 10px;
+    font-size: 47px;
+    padding: 30px 10px 2px 10px;
     background-color: #dbeb89;
     overflow-x: auto;
     &::-webkit-scrollbar-thumb:hover {
         background: #9bacff !important;
       }
-      &::-webkit-scrollbar-track {
+    &::-webkit-scrollbar-track {
         -webkit-box-shadow: inset 0 0 6px rgba(83, 83, 83, 0.07);
         background-color: #f1f1f1;
       }
-      &::-webkit-scrollbar {
+    &::-webkit-scrollbar {
         width: 7px;
         background-color: #f1f1f1;
       }
-      &::-webkit-scrollbar-thumb {
+    &::-webkit-scrollbar-thumb {
         background-color: #8b8eb2;
         border-radius: 40px;
       }
@@ -101,16 +100,19 @@ body {
     font-size: 30px;
     padding: 10px 10px 0px 10px;
     background-color: #a2b355;
-    width: 500px;
+    width: 360px;
 }
 
 .buttons-container {
     display: flex;
     flex-flow: column nowrap;
+    gap: 20px;
+    align-items: center;
+    padding: 20px;
+    justify-content: center;
 }
 
 button:hover {
     background-color: aquamarine;
     font-weight: bold;
-
 }

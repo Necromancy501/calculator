@@ -1,9 +1,8 @@
 
 // Main Listener Function
-// PENDING: REFACTOR THIS SO LABEL GETS PASSED INSTEAD OF OBJECT
 function inputHandler(label){
     let sliceIndex = stringDisplay.length + cursorCounter;
-    symbols = ['C','DEL','<=','=>','/%','**','+-','=','DOT']
+    symbols = ['C','DEL','<=','=>','/%','**','+-','=','DOT', '( )'];
 
     if (symbols.includes(label)){
         switch(label) {
@@ -67,7 +66,6 @@ function inputHandler(label){
 }
 
 // Cursor handler
-
 function updateDisplayWithCursor() {
     let cursorIndex = stringDisplay.length + cursorCounter;
     let displayWithCursor = 
@@ -77,25 +75,18 @@ function updateDisplayWithCursor() {
     displayOnPage.textContent = displayWithCursor;
 }
 
-
-
 // Constants for sketch layout.
 const BUTTONS_WIDTH = 4;
 const BUTTONS_HEIGHT = 4;
-const BUTTONS_BOTTOM = 3;
+const BUTTONS_BOTTOM = 2;
+const ROWS_BOTTOM = 2;
 
 // Selecting buttons container element
 const buttonsContainer = document.querySelector(".buttons-container");
-buttonsContainer.style.display = "flex";
-buttonsContainer.style.flexFlow = "column wrap";
-buttonsContainer.style.gap = "25px";
-buttonsContainer.style.alignItems = 'stretch';
-buttonsContainer.style.padding = '40px';
-buttonsContainer.style.justifyContent = 'center';
 
 // Stickers for buttons
 let stickersCounter = 0;
-const stickers = ['C','DEL','<=','=>','7','8','9','/%','4','5','6','**','1', '2', '3', '+-', "DOT", "0", "="];
+const stickers = ['C','DEL','<=','=>','7','8','9','/%','4','5','6','**','1', '2', '3', '+-', "0", "( )", ".", '='];
 
 // Creating buttons inside buttons container
 for (i=0; i<BUTTONS_HEIGHT; i++){
@@ -104,7 +95,7 @@ for (i=0; i<BUTTONS_HEIGHT; i++){
     const buttonsRow = document.createElement("div");
     buttonsRow.style.display = "flex";
     buttonsRow.style.flexFlow = "row nowrap";
-    buttonsRow.style.gap = "30px";
+    buttonsRow.style.gap = "20px";
     buttonsRow.style.justifyContent = "space-between";
     buttonsRow.style.alignItems = "center";
     buttonsRow.style.flex = "0, 1, auto";
@@ -119,9 +110,9 @@ for (i=0; i<BUTTONS_HEIGHT; i++){
         // Styling of the buttons
         button.style.margin = "0px";
         button.style.borderRadius = "40px";
-        button.style.width = "80px";
-        button.style.height = "80px";
-        button.style.fontSize = "27px";
+        button.style.width = "60px";
+        button.style.height = "60px";
+        button.style.fontSize = "17px";
         button.style.flex = "1, 1, auto";
         button.style.border = "8px solid #374b43";
 
@@ -130,44 +121,86 @@ for (i=0; i<BUTTONS_HEIGHT; i++){
     buttonsContainer.appendChild(buttonsRow);
 }
 
-// Creating last row of buttons
+// Layout of the last two rows
 
-//Creating and styling the row container
-const buttonsLastRow = document.createElement("div");
-buttonsLastRow.style.display = "flex";
-buttonsLastRow.style.flexFlow = "row nowrap";
-buttonsLastRow.style.gap = "29px";
-buttonsLastRow.style.justifyContent = "space-between";
-buttonsLastRow.style.alignItems = "center";
-buttonsLastRow.style.flex = "0, 1, auto";
+for (z=0;z<ROWS_BOTTOM;z++){
 
-for (a=0;a<BUTTONS_BOTTOM;a++){
+    const buttonsLastRow = document.createElement("div");
 
-    // Creation of the buttons
-    const button = document.createElement("button");
-    button.dataset.position = `${4},${a}`;
-    button.dataset.label = `${stickers[stickersCounter]}`;
-    button.textContent = stickers[stickersCounter++];
+    //Creating and styling the row container
+    if (z==0){
+        buttonsLastRow.style.display = "flex";
+        buttonsLastRow.style.flexFlow = "row nowrap";
+        buttonsLastRow.style.gap = "20px";
+        buttonsLastRow.style.justifyContent = "space-evenly";
+        buttonsLastRow.style.alignItems = "center";
+        buttonsLastRow.style.flex = "0, 1, auto";
+    }
+    else {
+        buttonsLastRow.style.display = "flex";
+        buttonsLastRow.style.flexFlow = "row nowrap";
+        buttonsLastRow.style.gap = "20px";
+        buttonsLastRow.style.justifyContent = "space-between";
+        buttonsLastRow.style.alignItems = "center";
+        buttonsLastRow.style.flex = "0, 1, auto";
+    }
+    
+    for (a=0;a<BUTTONS_BOTTOM;a++){
 
-    // Styling of the buttons
-    button.style.margin = "0px";
-    button.style.borderRadius = "40px";
-    button.style.width = "120px";
-    button.style.height = "80px";
-    button.style.fontSize = "27px";
-    button.style.flex = "1, 1, auto";
-    button.style.border = "8px solid #374b43";
+        // Creation of the buttons
+        const button = document.createElement("button");
+        button.dataset.position = `${z+4},${a}`;
+        button.dataset.label = `${stickers[stickersCounter]}`;
+        button.textContent = stickers[stickersCounter++];
+    
+        // Styling of the buttons
 
-    // Equal Specifics
-    if (button.textContent == '='){
-        button.style.fontSize = "40px";
+        switch(button.textContent){
+            case '0':
+                button.style.margin = "0px";
+                button.style.borderRadius = "40px";
+                button.style.width = "223px";
+                button.style.height = "50px";
+                button.style.fontSize = "17px";
+                button.style.flex = "1, 1, auto";
+                button.style.border = "8px solid #374b43";
+                break;
+            case '( )':
+                button.style.margin = "0px";
+                button.style.borderRadius = "40px";
+                button.style.width = "60px";
+                button.style.height = "60px";
+                button.style.fontSize = "17px";
+                button.style.flex = "1, 1, auto";
+                button.style.border = "8px solid #374b43";
+                break;
+            case '.':
+                button.style.margin = "0px";
+                button.style.borderRadius = "40px";
+                button.style.width = "70px";
+                button.style.height = "50px";
+                button.style.fontSize = "20px";
+                button.style.flex = "1, 1, auto";
+                button.style.border = "8px solid #374b43";
+                button.style.fontWeight = 'bold';
+                break;
+            case '=':
+                button.style.margin = "0px";
+                button.style.borderRadius = "40px";
+                button.style.width = "210px";
+                button.style.height = "50px";
+                button.style.fontSize = "30px";
+                button.style.flex = "1, 1, auto";
+                button.style.border = "8px solid #374b43";
+                break;
+        }
+        buttonsLastRow.appendChild(button);
     }
 
-    buttonsLastRow.appendChild(button);
-}
+    // Buttons get loaded into the DOM
+    buttonsContainer.appendChild(buttonsLastRow);
 
-// Buttons get loaded into the DOM
-buttonsContainer.appendChild(buttonsLastRow);
+}
 
 // Input behavior for buttons
 
