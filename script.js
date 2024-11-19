@@ -162,6 +162,8 @@ function inputHandler(label){
                         stringDisplay = stringArray.join(''); 
                     }
                     break;
+            case ('='):
+                noParenthesisParser(stringDisplay);
                 }
     }
     else { 
@@ -182,15 +184,8 @@ function updateDisplayWithCursor() {
     displayOnPage.textContent = displayWithCursor;
 }
 
-// Calculator EVAL
+// IMPLEMENTING CALCULATOR LOGIC
 
-function isValidExpression(string){
-    
-    // PENDING: REGEX FOR A VALID EXPRESSION WHICH LOOKS LIKE THIS
-    // (1+2)
-    // BREAKDOWN: (OPTIONAL) (, (OPTIONAL) + OR - , NUMBER(ANY LENGTH) , OPPERAND, (OPTIONAL) + OR -, NUMBER(ANY LENGTH), (OPTIONAL) )
-    // EDGE CASE 1: (((+2--4/+-+-+-+-3)))
-}
 
 // Constants for sketch layout.
 const BUTTONS_WIDTH = 4;
