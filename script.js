@@ -2,7 +2,7 @@
 // Main Listener Function
 function inputHandler(label){
     let sliceIndex = stringDisplay.length + cursorCounter;
-    symbols = ['C','DEL','<=','=>','/%','**','+-','=','DOT', '( )'];
+    symbols = ['C','DEL','<=','=>','/%','*^','+-','=','.', '( )'];
 
     if (symbols.includes(label)){
         switch(label) {
@@ -55,9 +55,116 @@ function inputHandler(label){
                     stringDisplay = stringArray.join(''); 
                 }
                 break;
-        }
+            case ('/%'):
+                if (!(cursorCounter === stringDisplay.length * -1)){
+                    if (stringDisplay[sliceIndex-1] === '/'){
+                        stringDisplay = stringDisplay.slice(0, sliceIndex-1) + stringDisplay.slice(sliceIndex);
+                        let stringArray = stringDisplay.split('');
+                        stringArray.splice(sliceIndex-1, 0, '%');
+                        stringDisplay = stringArray.join(''); 
+                    }
+                    else if (stringDisplay[sliceIndex-1] === '%'){
+                        stringDisplay = stringDisplay.slice(0, sliceIndex-1) + stringDisplay.slice(sliceIndex);
+                    }
+                    else {
+                        stringDisplay = stringDisplay.slice(0, sliceIndex) + stringDisplay.slice(sliceIndex);
+                        let stringArray = stringDisplay.split('');
+                        stringArray.splice(sliceIndex, 0, '/');
+                        stringDisplay = stringArray.join(''); 
+                    }
+                }
+                else {
+                    let stringArray = stringDisplay.split('');
+                    stringArray.splice(sliceIndex, 0, '/');
+                    stringDisplay = stringArray.join(''); 
+                }
+                break;
+            case ('+-'):
+                if (!(cursorCounter === stringDisplay.length * -1)){
+                    if (stringDisplay[sliceIndex-1] === '+'){
+                        stringDisplay = stringDisplay.slice(0, sliceIndex-1) + stringDisplay.slice(sliceIndex);
+                        let stringArray = stringDisplay.split('');
+                        stringArray.splice(sliceIndex-1, 0, '-');
+                        stringDisplay = stringArray.join(''); 
+                    }
+                    else if (stringDisplay[sliceIndex-1] === '-'){
+                        stringDisplay = stringDisplay.slice(0, sliceIndex-1) + stringDisplay.slice(sliceIndex);
+                    }
+                    else {
+                        stringDisplay = stringDisplay.slice(0, sliceIndex) + stringDisplay.slice(sliceIndex);
+                        let stringArray = stringDisplay.split('');
+                        stringArray.splice(sliceIndex, 0, '+');
+                        stringDisplay = stringArray.join(''); 
+                    }
+                }
+                else {
+                    let stringArray = stringDisplay.split('');
+                    stringArray.splice(sliceIndex, 0, '+');
+                    stringDisplay = stringArray.join(''); 
+                }
+                break;
+            case ('*^'):
+                if (!(cursorCounter === stringDisplay.length * -1)){
+                    if (stringDisplay[sliceIndex-1] === '*'){
+                        stringDisplay = stringDisplay.slice(0, sliceIndex-1) + stringDisplay.slice(sliceIndex);
+                        let stringArray = stringDisplay.split('');
+                        stringArray.splice(sliceIndex-1, 0, '^');
+                        stringDisplay = stringArray.join(''); 
+                    }
+                    else if (stringDisplay[sliceIndex-1] === '^'){
+                        stringDisplay = stringDisplay.slice(0, sliceIndex-1) + stringDisplay.slice(sliceIndex);
+                    }
+                    else {
+                        stringDisplay = stringDisplay.slice(0, sliceIndex) + stringDisplay.slice(sliceIndex);
+                        let stringArray = stringDisplay.split('');
+                        stringArray.splice(sliceIndex, 0, '*');
+                        stringDisplay = stringArray.join(''); 
+                    }
+                }
+                else {
+                    let stringArray = stringDisplay.split('');
+                    stringArray.splice(sliceIndex, 0, '*');
+                    stringDisplay = stringArray.join(''); 
+                }
+                break;
+            case ('( )'):
+                if (!(cursorCounter === stringDisplay.length * -1)){
+                    if (stringDisplay[sliceIndex-1] === '('){
+                        stringDisplay = stringDisplay.slice(0, sliceIndex-1) + stringDisplay.slice(sliceIndex);
+                        let stringArray = stringDisplay.split('');
+                        stringArray.splice(sliceIndex-1, 0, ')');
+                        stringDisplay = stringArray.join(''); 
+                    }
+                    else if (stringDisplay[sliceIndex-1] === ')'){
+                        stringDisplay = stringDisplay.slice(0, sliceIndex-1) + stringDisplay.slice(sliceIndex);
+                    }
+                    else {
+                        stringDisplay = stringDisplay.slice(0, sliceIndex) + stringDisplay.slice(sliceIndex);
+                        let stringArray = stringDisplay.split('');
+                        stringArray.splice(sliceIndex, 0, '(');
+                        stringDisplay = stringArray.join(''); 
+                    }
+                }
+                else {
+                    let stringArray = stringDisplay.split('');
+                    stringArray.splice(sliceIndex, 0, '(');
+                    stringDisplay = stringArray.join(''); 
+                }
+                break;
+            case ('.'):
+                    if (stringDisplay[sliceIndex-1] === '.'){
+                        stringDisplay = stringDisplay.slice(0, sliceIndex-1) + stringDisplay.slice(sliceIndex);
+                    }
+                    else {
+                        stringDisplay = stringDisplay.slice(0, sliceIndex) + stringDisplay.slice(sliceIndex);
+                        let stringArray = stringDisplay.split('');
+                        stringArray.splice(sliceIndex, 0, '.');
+                        stringDisplay = stringArray.join(''); 
+                    }
+                    break;
+                }
     }
-    else{
+    else { 
         let stringArray = stringDisplay.split('');
         stringArray.splice(sliceIndex, 0, label);
         stringDisplay = stringArray.join(''); 
@@ -75,6 +182,16 @@ function updateDisplayWithCursor() {
     displayOnPage.textContent = displayWithCursor;
 }
 
+// Calculator EVAL
+
+function isValidExpression(string){
+    
+    // PENDING: REGEX FOR A VALID EXPRESSION WHICH LOOKS LIKE THIS
+    // (1+2)
+    // BREAKDOWN: (OPTIONAL) (, (OPTIONAL) + OR - , NUMBER(ANY LENGTH) , OPPERAND, (OPTIONAL) + OR -, NUMBER(ANY LENGTH), (OPTIONAL) )
+    // EDGE CASE 1: (((+2--4/+-+-+-+-3)))
+}
+
 // Constants for sketch layout.
 const BUTTONS_WIDTH = 4;
 const BUTTONS_HEIGHT = 4;
@@ -86,7 +203,7 @@ const buttonsContainer = document.querySelector(".buttons-container");
 
 // Stickers for buttons
 let stickersCounter = 0;
-const stickers = ['C','DEL','<=','=>','7','8','9','/%','4','5','6','**','1', '2', '3', '+-', "0", "( )", ".", '='];
+const stickers = ['C','DEL','<=','=>','7','8','9','/%','4','5','6','*^','1', '2', '3', '+-', "0", "( )", ".", '='];
 
 // Creating buttons inside buttons container
 for (i=0; i<BUTTONS_HEIGHT; i++){
@@ -206,6 +323,7 @@ for (z=0;z<ROWS_BOTTOM;z++){
 
 const buttonsOnPage = document.querySelector(".buttons-container");
 const displayOnPage = document.querySelector(".display-top");
+const resultDisplayOnPage = document.querySelector(".display-bottom");
 
 let stringDisplay = '';
 let cursorCounter = 0;
