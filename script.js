@@ -163,7 +163,7 @@ function inputHandler(label){
                     }
                     break;
             case ('='):
-                noParenthesisParser(stringDisplay);
+                mathParser(stringDisplay);
                 }
     }
     else { 
