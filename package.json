@@ -1,0 +1,29 @@
+{
+  "name": "calculator",
+  "version": "1.0.0",
+  "description": "TOP Final Project",
+  "main": "parser.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Necromancy501/calculator.git"
+  },
+  "keywords": [
+    "calculator",
+    "top",
+    "atomic",
+    "final",
+    "foundations"
+  ],
+  "author": "Necromancy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Necromancy501/calculator/issues"
+  },
+  "homepage": "https://github.com/Necromancy501/calculator#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

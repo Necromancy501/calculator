@@ -36,7 +36,7 @@ const multiply = function(...numbers) {
     }
 }, 1);
 
-return flag ? result : 'ERROR';
+return flag ? (Math.round((result + Number.EPSILON) * 100) / 100) : 'ERROR';
 
 };
 
@@ -60,13 +60,14 @@ const modulo = function(number1, number2) {
 };
 
 const division = function(number1, number2) {
-    if (typeof(number1) === 'number' && typeof(number2) === 'number'){
-        return number1/number2;
-      }
-      else{
+    if (number2 === 0) {
         return 'ERROR';
-      }
-    
+    }
+    if (typeof number1 === 'number' && typeof number2 === 'number') {
+        console.log("AAAAAAAAAAAAAAAAAAAAA");
+        return number1 / number2;
+    }
+    return 'ERROR'; // Handle unexpected input types
 };
 
 const opperands = {
@@ -127,6 +128,25 @@ let mathExpression = {
 
 function mathParser(mathString) {
 
+    // Mismatched parenthesis
+    let parenthesisTest = 0;
+    for (char of mathString){
+        if (char === '('){
+            parenthesisTest++;
+        }
+        else if (char === ')'){
+            parenthesisTest--;
+        }
+    }
+    if (parenthesisTest!=0){
+        return 'ERROR';
+    }
+
+    // Empty string
+    if (mathString === ''){
+        return '0';
+    }
+
     if (typeof mathString !== 'string') {
         console.error(`Invalid input to mathParser: ${mathString}`);
         return 'ERROR';
@@ -185,3 +205,10 @@ function mathParser(mathString) {
     console.log(`Final result: ${mathString}`);
     return mathString;
 }
+
+/**
+    // Do not edit below this line
+        module.exports = {
+            mathParser,
+        };
+*/
