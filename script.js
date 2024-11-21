@@ -163,7 +163,7 @@ function inputHandler(label){
                     }
                     break;
             case ('='):
-                console.log(typeof(mathParser(stringDisplay)));
+                console.log(mathParser(stringDisplay));
                 }
     }
     else { 

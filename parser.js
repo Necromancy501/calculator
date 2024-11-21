@@ -64,7 +64,6 @@ const division = function(number1, number2) {
         return 'ERROR';
     }
     if (typeof number1 === 'number' && typeof number2 === 'number') {
-        console.log("AAAAAAAAAAAAAAAAAAAAA");
         return number1 / number2;
     }
     return 'ERROR'; // Handle unexpected input types
@@ -87,6 +86,7 @@ function matchNumbersAroundIndex(input, index) {
     while (leftIndex >= 0 && input[leftIndex].match(/\d|\./)) {
         leftIndex--; // Go left until we find the start of the number
     }
+
     leftIndex++; // Adjust to the start of the number
     const leftMatch = input.slice(leftIndex, index).match(regex)?.[0] || null;
 
@@ -105,12 +105,12 @@ function matchNumbersAroundIndex(input, index) {
     mathExpression.index = index;
     mathExpression.opperand = input[index];
 
-    const remainingString = input.slice(0, startIndex) + betaEvaluator(mathExpression) + input.slice(endIndex);
+    const remainingString = input.slice(0, startIndex) + mathEval(mathExpression) + input.slice(endIndex);
     return remainingString;
 
 }
 
-function betaEvaluator(obj) {
+function mathEval(obj) {
     console.log(`Evaluating: ${obj.firstNumber} ${obj.opperand} ${obj.secondNumber}`);
     for (const key in opperands){
         if (opperands[key].symbol === obj.opperand){
@@ -128,6 +128,12 @@ let mathExpression = {
 
 function mathParser(mathString) {
 
+    // Error from opperands
+
+    if (mathString === 'ERROR'){
+        return 'ERROR';
+    }
+
     // Mismatched parenthesis
     let parenthesisTest = 0;
     for (char of mathString){
@@ -144,7 +150,7 @@ function mathParser(mathString) {
 
     // Empty string
     if (mathString === ''){
-        return '0';
+        return '';
     }
 
     if (typeof mathString !== 'string') {
@@ -206,9 +212,8 @@ function mathParser(mathString) {
     return mathString;
 }
 
-/**
+
     // Do not edit below this line
         module.exports = {
             mathParser,
         };
-*/
