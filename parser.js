@@ -79,7 +79,6 @@ const opperands = {
 };
 
 function matchNumbersAroundIndex(input, index) {
-    const regex = /\d+(\.\d+)?|\.\d+/g;
 
     // Match the left number
     let leftIndex = index - 1;
@@ -87,16 +86,35 @@ function matchNumbersAroundIndex(input, index) {
         leftIndex--; // Go left until we find the start of the number
     }
 
-    leftIndex++; // Adjust to the start of the number
-    const leftMatch = input.slice(leftIndex, index).match(regex)?.[0] || null;
+    let leftMatch;
+
+    // Negative numbers logic
+
+    if ((leftIndex === 0) && (input[0] === '-')){
+        leftMatch = input.slice(0, index);
+    }
+
+    else if (input[leftIndex]==='-' &&  input[leftIndex-1].match(/[^\d]/)){
+        leftMatch = input.slice(leftIndex, index);
+    }
+    else {
+        leftIndex++; // Adjust to the start of the number
+        leftMatch = input.slice(leftIndex, index);
+    }
 
     // Match the right number
-    const rightPart = input.slice(index + 1); // Skip the operator at the index
-    const rightMatch = rightPart.match(regex)?.[0] || null;
+    let rightIndex = index + 1;
+    if (input[rightIndex] === '-'){
+        rightIndex++;
+    }
 
+    while (rightIndex < input.length && input[rightIndex].match(/\d|\./)){
+        rightIndex++;
+    }
+
+    let rightMatch = input.slice(index+1, rightIndex);
     if (!leftMatch || !rightMatch) return null;
 
-    const expression = `${leftMatch}${input[index]}${rightMatch}`;
     const startIndex = leftIndex;
     const endIndex = index + 1 + rightMatch.length;
 
@@ -159,9 +177,10 @@ function mathParser(mathString) {
     }
 
     // Base case: If no valid operation exists, stop recursion
-    if (!mathString.match(/\d+(\.\d+)?|\.\d+/)) {
+    if (!mathString.match(/[\+\-\*\/\^%]/) || 
+    (mathString.match(/^-?\d+(\.\d+)?$/) && !mathString.includes('+') && !mathString.includes('*') && !mathString.includes('/'))) {
         console.log(`Final result: ${mathString}`);
-        return;
+        return mathString;
     }
 
     let maxPrecedence = 0;
@@ -173,6 +192,11 @@ function mathParser(mathString) {
     for (let i = 0; i < mathString.length; i++) {
         const char = mathString[i];
 
+        // Special case: Skip minus sign at the start of the string or as a negative initializer
+        if (char === '-' && (i === 0 || "+-*/^%(".includes(mathString[i - 1]))) {
+            continue; // Skip this iteration as it’s not an operator
+            }
+
         if (char === '(') {
             parenthesisCounter++;
         } else if (char === ')') {
@@ -181,6 +205,7 @@ function mathParser(mathString) {
 
         if (parenthesisCounter === 0) {
             for (const key in opperands) {
+
                 if (opperands[key].symbol === char) {
                     const currPrecedence = opperands[key].precedence + parenthesisCounter * 10;
                     if (currPrecedence > maxPrecedence) {
@@ -213,7 +238,9 @@ function mathParser(mathString) {
 }
 
 
-    // Do not edit below this line
-        module.exports = {
-            mathParser,
-        };
+    
+// Do not edit below this line
+    module.exports = {
+        mathParser,
+    };
+    
