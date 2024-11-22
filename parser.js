@@ -1,3 +1,9 @@
+// Round function
+
+const roundResult = function(number){
+    return (Math.round((number + Number.EPSILON) * 100) / 100);
+}
+
 // MATHEMATICAL EVALUATIONS
 
 const add = function(...numbers) {
@@ -5,19 +11,20 @@ const add = function(...numbers) {
     const result = (Array.from(arguments)).reduce((total, number)=>{
     
         if (typeof(number) === 'number'){
-            return (total += number);}
+            return total += number;
+        }
         else{
             flag = false;
             return 0;
         }
     }, 0);
 
-    return flag ? result : 'ERROR';
+    return flag ? roundResult(result) : 'ERROR';
 };
 
 const subtract = function(number1, number2) {
     if (typeof(number1) === 'number' && typeof(number2) === 'number'){
-      return number1-number2;
+        return roundResult(number1-number2);
     }
     else{
       return 'ERROR';
@@ -36,13 +43,13 @@ const multiply = function(...numbers) {
     }
 }, 1);
 
-return flag ? (Math.round((result + Number.EPSILON) * 100) / 100) : 'ERROR';
+return flag ? roundResult(result) : 'ERROR';
 
 };
 
 const power = function(number1, number2) {
     if (typeof(number1) === 'number' && typeof(number2) === 'number'){
-      return number1**number2;
+      return roundResult(number1**number2);
     }
     else{
       return 'ERROR';
@@ -51,7 +58,7 @@ const power = function(number1, number2) {
 
 const modulo = function(number1, number2) {
     if (typeof(number1) === 'number' && typeof(number2) === 'number'){
-        return number1%number2;
+        return roundResult(number1%number2);
       }
       else{
         return 'ERROR';
@@ -64,7 +71,7 @@ const division = function(number1, number2) {
         return 'ERROR';
     }
     if (typeof number1 === 'number' && typeof number2 === 'number') {
-        return number1 / number2;
+        return roundResult(number1/number2);
     }
     return 'ERROR'; // Handle unexpected input types
 };
@@ -129,7 +136,6 @@ function matchNumbersAroundIndex(input, index) {
 }
 
 function mathEval(obj) {
-    console.log(`Evaluating: ${obj.firstNumber} ${obj.opperand} ${obj.secondNumber}`);
     for (const key in opperands){
         if (opperands[key].symbol === obj.opperand){
             return opperands[key].does(obj.firstNumber,obj.secondNumber);
@@ -148,8 +154,25 @@ function mathParser(mathString) {
 
     // Error from opperands
 
+    if (mathString === 'ERROR' || (mathString === null)){
+        return 'ERROR';
+    }
+
+    // Base case: If no valid operation exists, stop recursion
+    if (!mathString.match(/[\+\-\*\/\^%]/) || 
+    (mathString.match(/^-?\d+(\.\d+)?$/) && !mathString.includes('+') && !mathString.includes('*') && !mathString.includes('/'))) {
+        return mathString;
+    }
+
+    // Error from opperands
+
     if (mathString === 'ERROR'){
         return 'ERROR';
+    }
+
+    // Empty string
+    if (mathString === ''){
+        return '';
     }
 
     // Mismatched parenthesis
@@ -166,21 +189,9 @@ function mathParser(mathString) {
         return 'ERROR';
     }
 
-    // Empty string
-    if (mathString === ''){
-        return '';
-    }
-
     if (typeof mathString !== 'string') {
         console.error(`Invalid input to mathParser: ${mathString}`);
         return 'ERROR';
-    }
-
-    // Base case: If no valid operation exists, stop recursion
-    if (!mathString.match(/[\+\-\*\/\^%]/) || 
-    (mathString.match(/^-?\d+(\.\d+)?$/) && !mathString.includes('+') && !mathString.includes('*') && !mathString.includes('/'))) {
-        console.log(`Final result: ${mathString}`);
-        return mathString;
     }
 
     let maxPrecedence = 0;
@@ -233,14 +244,14 @@ function mathParser(mathString) {
         return mathParser(mathString); // Recurse with updated string
     }
 
-    console.log(`Final result: ${mathString}`);
     return mathString;
 }
 
 
-    
+/* UNCOMMENT IF JESTER TEST   
 // Do not edit below this line
     module.exports = {
         mathParser,
     };
+*/
     

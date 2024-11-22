@@ -133,3 +133,138 @@ describe('mathParser', () => {
   });
 
 });
+
+describe('mathParser - Additional Tests', () => {
+
+  describe('Complex Expressions', () => {
+    test('Mixed operations with parentheses', () => {
+      expect(mathParser('3+(6*2)-4^2/2')).toBe('7');
+    });
+
+    test('Multiple nested parentheses', () => {
+      expect(mathParser('((2+3)*(4-1))+(6/(1+2))')).toBe('17');
+    });
+
+    test('Mix of negative and positive numbers', () => {
+      expect(mathParser('-3+4*-2+5')).toBe('-6');
+    });
+  });
+
+  describe('Negative Numbers and Edge Cases', () => {
+    test('Standalone negative number', () => {
+      expect(mathParser('-42')).toBe('-42');
+    });
+
+    test('Negative result from subtraction', () => {
+      expect(mathParser('5-10')).toBe('-5');
+    });
+
+    test('Negative base with exponentiation', () => {
+      expect(mathParser('(-2)^3')).toBe('-8');
+    });
+
+    test('Negative number after parentheses', () => {
+      expect(mathParser('(3+4)*-2')).toBe('-14');
+    });
+
+    test('Negative division', () => {
+      expect(mathParser('-10/2')).toBe('-5');
+    });
+  });
+
+  describe('Floating Point Precision', () => {
+    test('Floating point addition with many decimals', () => {
+      expect(mathParser('0.1+0.2')).toBe('0.3'); // Relying on rounding in your implementation
+    });
+
+    test('Floating point subtraction', () => {
+      expect(mathParser('5.5-2.2')).toBe('3.3');
+    });
+
+    test('Floating point multiplication', () => {
+      expect(mathParser('1.1*1.1')).toBe('1.21');
+    });
+
+    test('Floating point division', () => {
+      expect(mathParser('1.0/3.0')).toBe('0.33');
+    });
+  });
+
+  describe('Large Numbers', () => {
+    test('Very large addition', () => {
+      expect(mathParser('999999999+999999999')).toBe('1999999998');
+    });
+
+    test('Very large multiplication', () => {
+      expect(mathParser('100000*100000')).toBe('10000000000');
+    });
+
+    test('Exponentiation with large base and exponent', () => {
+      expect(mathParser('10^8')).toBe('100000000');
+    });
+  });
+
+  describe('Error Handling and Invalid Input', () => {
+    test.skip('Unrecognized character in input', () => {
+      expect(mathParser('10+5a')).toBe('ERROR');
+    });
+
+    test('Multiple operators in a row', () => {
+      expect(mathParser('10++5')).toBe('ERROR');
+    });
+
+    test('Trailing operator', () => {
+      expect(mathParser('10+')).toBe('ERROR');
+    });
+
+    test('Leading operator', () => {
+      expect(mathParser('+10')).toBe('ERROR');
+    });
+
+    test('Mismatched parentheses', () => {
+      expect(mathParser('(2+3')).toBe('ERROR');
+    });
+
+    test('Divide by zero in complex expression', () => {
+      expect(mathParser('10/(5-5)')).toBe('ERROR');
+    });
+  });
+
+  describe.skip('Whitespace Handling', () => {
+    test('Expression with extra spaces', () => {
+      expect(mathParser('  2  +  3  *  4  ')).toBe('14');
+    });
+
+    test('Negative numbers with spaces', () => {
+      expect(mathParser('  -3  +  4  ')).toBe('1');
+    });
+
+    test('Spaces between parentheses', () => {
+      expect(mathParser('(  2  +  3  ) *  4')).toBe('20');
+    });
+  });
+
+  describe('Special Cases', () => {
+    test('Expression with only parentheses', () => {
+      expect(mathParser('((()))')).toBe('');
+    });
+
+    test('Expression with multiple consecutive negative signs', () => {
+      expect(mathParser('5--5')).toBe('10');
+    });
+
+    test('Multiple modulo operations', () => {
+      expect(mathParser('10%3%2')).toBe('1');
+    });
+
+    test('Expression with redundant parentheses', () => {
+      expect(mathParser('(((2+3)))')).toBe('5');
+    });
+
+    test('Expression with redundant operators', () => {
+      expect(mathParser('10+--5')).toBe('15');
+    });
+  });
+
+});
+

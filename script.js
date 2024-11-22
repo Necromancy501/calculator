@@ -3,6 +3,7 @@
 function inputHandler(label){
     let sliceIndex = stringDisplay.length + cursorCounter;
     symbols = ['C','DEL','<=','=>','/%','*^','+-','=','.', '( )'];
+    let equalSignPressed = false;
 
     if (symbols.includes(label)){
         switch(label) {
@@ -163,13 +164,19 @@ function inputHandler(label){
                     }
                     break;
             case ('='):
-                console.log(mathParser(stringDisplay));
+                stringDisplay = smallDisplay.textContent;
+                smallDisplay.textContent = '';
+                equalSignPressed = true;
                 }
     }
     else { 
         let stringArray = stringDisplay.split('');
         stringArray.splice(sliceIndex, 0, label);
         stringDisplay = stringArray.join(''); 
+    }
+
+    if (!equalSignPressed){
+        smallDisplay.textContent = mathParser(stringDisplay);
     }
     updateDisplayWithCursor();
 }
@@ -322,6 +329,10 @@ const resultDisplayOnPage = document.querySelector(".display-bottom");
 
 let stringDisplay = '';
 let cursorCounter = 0;
+
+// Small display getter
+
+const smallDisplay = document.querySelector(".display-bottom");
 
 buttonsOnPage.addEventListener("click", (e) => {
     if (e.target.dataset.label){
